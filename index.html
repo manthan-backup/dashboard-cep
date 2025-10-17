@@ -148,6 +148,28 @@
     </div>
 
     <!-- Modals -->
+    <!-- Image Viewer Modal -->
+    <div id="imageViewerModal" class="modal">
+        <div class="modal-content image-viewer">
+            <span class="close" onclick="closeImageViewer()">&times;</span>
+            <div class="image-viewer-wrapper">
+                <button class="viewer-nav prev" onclick="prevImage()" title="Previous">&#10094;</button>
+                <img id="viewerImage" class="viewer-image" alt="Preview">
+                <button class="viewer-nav next" onclick="nextImage()" title="Next">&#10095;</button>
+            </div>
+            <div class="image-viewer-info">
+                <div>
+                    <h3 id="viewerTitle"></h3>
+                    <p id="viewerDescription"></p>
+                    <p id="viewerMeta" class="viewer-meta"></p>
+                </div>
+                <div class="viewer-actions">
+                    <button class="btn-small btn-delete" onclick="deleteCurrentImage()">🗑️ Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Poster Modal -->
     <div id="posterModal" class="modal">
         <div class="modal-content">
@@ -156,7 +178,7 @@
             <form id="posterForm">
                 <input type="text" id="posterTitle" placeholder="Title" required>
                 <textarea id="posterDesc" placeholder="Description"></textarea>
-                <input type="file" id="posterFile" accept="image/*" required>
+                <input type="file" id="posterFile" accept="image/*" multiple required>
                 <button type="submit" class="btn-primary">Upload Poster</button>
             </form>
         </div>
@@ -169,7 +191,8 @@
             <h3>Add Ward Map Link</h3>
             <form id="wardMapForm">
                 <input type="text" id="mapTitle" placeholder="Title" required>
-                <input type="url" id="mapUrl" placeholder="Map URL" required>
+                <input type="url" id="mapUrl" placeholder="Map URL (optional)">
+                <input type="file" id="mapFile" accept=".kml,.kmz">
                 <textarea id="mapDesc" placeholder="Description"></textarea>
                 <button type="submit" class="btn-primary">Add Map</button>
             </form>
@@ -211,7 +234,7 @@
             <form id="interviewForm">
                 <input type="text" id="interviewTitle" placeholder="Title" required>
                 <textarea id="interviewDesc" placeholder="Description"></textarea>
-                <input type="file" id="interviewFile" accept="audio/*,video/*" required>
+                <input type="file" id="interviewFile" accept="audio/*,video/*" multiple required>
                 <button type="submit" class="btn-primary">Add Media</button>
             </form>
         </div>
@@ -231,6 +254,22 @@
         </div>
     </div>
 
+    <!-- Map Viewer Modal -->
+    <div id="mapViewerModal" class="modal">
+        <div class="modal-content map-viewer-modal">
+            <span class="close" onclick="closeMapViewer()">&times;</span>
+            <h3>🗺️ Interactive Map Viewer</h3>
+            <div id="mapViewerContent">
+                <div class="loading">Loading map...</div>
+            </div>
+            <div class="map-details-panel">
+                <div id="mapDetailsContent">
+                    <div class="loading">Parsing map data...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Problem Modal -->
     <div id="problemModal" class="modal">
         <div class="modal-content">
@@ -247,6 +286,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
