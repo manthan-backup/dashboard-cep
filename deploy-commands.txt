@@ -1,0 +1,23 @@
+# Commands to deploy to GitHub and Vercel
+
+# 1. Initialize git and push to GitHub
+cd "d:\NEW DASHBOARD\simple-urban-audit"
+git init
+git add .
+git commit -m "Initial commit: Urban Audit Dashboard with LocalStorage"
+git branch -M main
+git remote add origin https://github.com/manthan-backup/dashboard-cep.git
+git push -u origin main
+
+# 2. Deploy to Vercel (after GitHub push)
+# Option A: Using Vercel CLI
+npm i -g vercel
+vercel --prod
+
+# Option B: Connect GitHub to Vercel
+# 1. Go to vercel.com
+# 2. Click "New Project"
+# 3. Import from GitHub: manthan-backup/dashboard-cep
+# 4. Deploy!
+
+# Your site will be live at: https://dashboard-cep.vercel.app (or similar)

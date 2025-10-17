@@ -1,0 +1,12 @@
+{
+  "name": "urban-audit-dashboard",
+  "version": "1.0.0",
+  "description": "Simple Urban Audit Dashboard with LocalStorage",
+  "scripts": {
+    "dev": "open index.html",
+    "build": "echo 'No build needed for static site'"
+  },
+  "keywords": ["urban", "audit", "dashboard", "localstorage"],
+  "author": "Your Name",
+  "license": "MIT"
+}

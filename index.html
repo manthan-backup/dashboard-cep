@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Audit Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <h1>🏙️ Urban Audit Dashboard</h1>
+            <p>Select your profile to continue</p>
+            <div class="user-cards">
+                <div class="user-card" onclick="login('Manthan')">
+                    <div class="user-avatar">M</div>
+                    <h3>Manthan</h3>
+                </div>
+                <div class="user-card" onclick="login('Vihan')">
+                    <div class="user-avatar">V</div>
+                    <h3>Vihan</h3>
+                </div>
+                <div class="user-card" onclick="login('Nemi')">
+                    <div class="user-avatar">N</div>
+                    <h3>Nemi</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardScreen" class="screen">
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <h2>Urban Audit Dashboard</h2>
+                <span id="currentUser" class="user-badge"></span>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <button onclick="showDataInfo()" class="btn-logout" style="background:var(--primary); border-color:var(--primary); color:white;">💾 View Storage</button>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <div class="container">
+            <aside class="sidebar">
+                <nav>
+                    <button class="nav-btn active" onclick="showModule('poster')">
+                        📸 Poster Upload
+                    </button>
+                    <button class="nav-btn" onclick="showModule('wardmap')">
+                        🗺️ Ward Map
+                    </button>
+                    <button class="nav-btn" onclick="showModule('skywalk')">
+                        🏗️ Skywalk Audit
+                    </button>
+                    <button class="nav-btn" onclick="showModule('survey')">
+                        📊 Survey Analytics
+                    </button>
+                    <button class="nav-btn" onclick="showModule('interview')">
+                        🎤 Interview Media
+                    </button>
+                    <button class="nav-btn" onclick="showModule('mapillary')">
+                        📍 Mapillary Mapping
+                    </button>
+                    <button class="nav-btn" onclick="showModule('problem')">
+                        💻 Problem Solving
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Module 1: Poster Upload -->
+                <div id="posterModule" class="module active">
+                    <div class="module-header">
+                        <h3>📸 Poster Upload</h3>
+                        <button class="btn-primary" onclick="openPosterModal()">+ Add Poster</button>
+                    </div>
+                    <div id="posterGrid" class="grid"></div>
+                </div>
+
+                <!-- Module 2: Ward Map -->
+                <div id="wardmapModule" class="module">
+                    <div class="module-header">
+                        <h3>🗺️ Ward Map</h3>
+                        <button class="btn-primary" onclick="openWardMapModal()">+ Add Map Link</button>
+                    </div>
+                    <div id="wardMapList" class="list"></div>
+                </div>
+
+                <!-- Module 3: Skywalk Audit -->
+                <div id="skywalkModule" class="module">
+                    <div class="module-header">
+                        <h3>🏗️ Skywalk Audit</h3>
+                        <button class="btn-primary" onclick="openSkywalkModal()">+ Create Audit</button>
+                    </div>
+                    <div id="skywalkList" class="list"></div>
+                </div>
+
+                <!-- Module 4: Survey Analytics -->
+                <div id="surveyModule" class="module">
+                    <div class="module-header">
+                        <h3>📊 Survey Analytics</h3>
+                        <button class="btn-primary" onclick="openSurveyModal()">+ Upload CSV</button>
+                    </div>
+                    <div id="surveyList" class="list"></div>
+                    <canvas id="chartCanvas" style="display:none; max-width: 600px; margin: 20px auto;"></canvas>
+                </div>
+
+                <!-- Module 5: Interview Media -->
+                <div id="interviewModule" class="module">
+                    <div class="module-header">
+                        <h3>🎤 Interview Media</h3>
+                        <button class="btn-primary" onclick="openInterviewModal()">+ Add Media</button>
+                    </div>
+                    <div id="interviewList" class="list"></div>
+                    <div id="audioPlayer" class="media-player" style="display:none;">
+                        <audio controls id="audioElement"></audio>
+                        <p id="audioTitle"></p>
+                    </div>
+                </div>
+
+                <!-- Module 6: Mapillary Mapping -->
+                <div id="mapillaryModule" class="module">
+                    <div class="module-header">
+                        <h3>📍 Mapillary Mapping</h3>
+                        <button class="btn-primary" onclick="openMapillaryModal()">+ Add Mapping</button>
+                    </div>
+                    <div id="mapillaryList" class="list"></div>
+                </div>
+
+                <!-- Module 7: Problem Solving -->
+                <div id="problemModule" class="module">
+                    <div class="module-header">
+                        <h3>💻 Problem Solving</h3>
+                        <button class="btn-primary" onclick="openProblemModal()">+ Add Solution</button>
+                    </div>
+                    <div id="problemList" class="list"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Poster Modal -->
+    <div id="posterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePosterModal()">&times;</span>
+            <h3>Add New Poster</h3>
+            <form id="posterForm">
+                <input type="text" id="posterTitle" placeholder="Title" required>
+                <textarea id="posterDesc" placeholder="Description"></textarea>
+                <input type="file" id="posterFile" accept="image/*" required>
+                <button type="submit" class="btn-primary">Upload Poster</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ward Map Modal -->
+    <div id="wardMapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWardMapModal()">&times;</span>
+            <h3>Add Ward Map Link</h3>
+            <form id="wardMapForm">
+                <input type="text" id="mapTitle" placeholder="Title" required>
+                <input type="url" id="mapUrl" placeholder="Map URL" required>
+                <textarea id="mapDesc" placeholder="Description"></textarea>
+                <button type="submit" class="btn-primary">Add Map</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Skywalk Modal -->
+    <div id="skywalkModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSkywalkModal()">&times;</span>
+            <h3>Create Skywalk Audit</h3>
+            <form id="skywalkForm">
+                <input type="text" id="skywalkTitle" placeholder="Audit Title" required>
+                <textarea id="skywalkDesc" placeholder="Description"></textarea>
+                <input type="file" id="skywalkFiles" accept="image/*" multiple required>
+                <button type="submit" class="btn-primary">Create Audit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Survey Modal -->
+    <div id="surveyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSurveyModal()">&times;</span>
+            <h3>Upload Survey Data</h3>
+            <form id="surveyForm">
+                <input type="text" id="surveyTitle" placeholder="Survey Title" required>
+                <input type="file" id="surveyFile" accept=".csv" required>
+                <button type="submit" class="btn-primary">Upload & Analyze</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interview Modal -->
+    <div id="interviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeInterviewModal()">&times;</span>
+            <h3>Add Interview Media</h3>
+            <form id="interviewForm">
+                <input type="text" id="interviewTitle" placeholder="Title" required>
+                <textarea id="interviewDesc" placeholder="Description"></textarea>
+                <input type="file" id="interviewFile" accept="audio/*,video/*" required>
+                <button type="submit" class="btn-primary">Add Media</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mapillary Modal -->
+    <div id="mapillaryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMapillaryModal()">&times;</span>
+            <h3>Add Mapillary Mapping</h3>
+            <form id="mapillaryForm">
+                <input type="text" id="mapillaryTitle" placeholder="Title" required>
+                <input type="url" id="mapillaryUrl" placeholder="Mapillary URL" required>
+                <input type="file" id="mapillaryImages" accept="image/*" multiple>
+                <button type="submit" class="btn-primary">Add Mapping</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Problem Modal -->
+    <div id="problemModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProblemModal()">&times;</span>
+            <h3>Add Problem Solution</h3>
+            <form id="problemForm">
+                <input type="text" id="problemTitle" placeholder="Problem Title" required>
+                <input type="url" id="problemUrl" placeholder="Solution URL (GitHub, CodePen, etc.)" required>
+                <textarea id="problemDesc" placeholder="Description"></textarea>
+                <input type="text" id="problemTags" placeholder="Tags (comma separated)">
+                <button type="submit" class="btn-primary">Add Solution</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
